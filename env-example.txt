@@ -1,0 +1,17 @@
+# Firebase Configuration
+# Copy this content to a file named .env in the root directory
+# Get these values from: https://console.firebase.google.com → Project Settings → Your apps → Web app
+
+VITE_FIREBASE_API_KEY=your_api_key_here
+VITE_FIREBASE_AUTH_DOMAIN=hackhive-autonomous.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=hackhive-autonomous
+VITE_FIREBASE_STORAGE_BUCKET=hackhive-autonomous.appspot.com
+VITE_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id_here
+VITE_FIREBASE_APP_ID=your_app_id_here
+
+# Instructions:
+# 1. Create a file named .env (with the dot at the start) in the root directory
+# 2. Copy the lines above (without the # comments) into the .env file
+# 3. Replace the placeholder values with your actual Firebase credentials
+# 4. Save the file
+# 5. Restart the dev server (npm run dev)
