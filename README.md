@@ -160,16 +160,17 @@ AutonomousHacks_HackHive26-backend-firebase/
 }
 
 
-**## Setup Instructions
-**
-**### Prerequisites
-**- Node.js 18+ installed
+```markdown
+**## Setup Instructions**
+
+**### Prerequisites**
+- Node.js 18+ installed
 - Firebase account
 - Google Gemini API key (for AI-powered waste detection)
 - Git (optional)
 
-**### Step 1: Clone and Install
-**
+**### Step 1: Clone and Install**
+
 ```bash
 # Navigate to project directory
 cd AutonomousHacks_HackHive26-backend-firebase
@@ -181,6 +182,7 @@ npm install
 cd functions
 npm install
 cd ..
+```
 ```
 
 ### Step 2: Configure Firebase
