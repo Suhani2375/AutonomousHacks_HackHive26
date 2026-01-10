@@ -129,36 +129,37 @@ AutonomousHacks_HackHive26-backend-firebase/
 
 ## Firestore Data Model
 
-### users
+### `users` Collection
 ```js
 {
-  uid,
-  email,
-  displayName,
+  uid: string,
+  email: string,
+  displayName: string,
   role: "citizen" | "sweeper" | "admin",
-  points,
-  totalReports,
-  totalCleaned,
-  approved,
-  createdAt
+  points: number,
+  totalReports: number,
+  totalCleaned: number,
+  approved: boolean,
+  createdAt: timestamp
 }
-
-
-**### reports** 
+### `reports` Collection
 {
-  citizenId,
-  imageBefore,
-  imageAfter,
-  status,
-  location,
-  assignedTo,
-  wasteType,
-  priority,
-  createdAt,
-  cleanedAt
+  citizenId: string,
+  imageBefore: string,
+  imageAfter: string,
+  status: "pending" | "assigned" | "fake" | "verified",
+  location: {
+    lat: number,
+    lng: number
+  },
+  assignedTo: string,
+  wasteType: "dry" | "wet",
+  priority: "red" | "yellow" | "green",
+  createdAt: timestamp,
+  cleanedAt: timestamp
 }
----
----
+
+
 **## Setup Instructions
 **
 **### Prerequisites
