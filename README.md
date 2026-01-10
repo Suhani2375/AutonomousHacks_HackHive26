@@ -144,7 +144,7 @@ AutonomousHacks_HackHive26-backend-firebase/
 }
 
 
-### reports 
+**### reports** 
 {
   citizenId,
   imageBefore,
@@ -157,20 +157,18 @@ AutonomousHacks_HackHive26-backend-firebase/
   createdAt,
   cleanedAt
 }
-
-
 ---
 ---
-## Setup Instructions
-
-### Prerequisites
-- Node.js 18+ installed
+**## Setup Instructions
+**
+**### Prerequisites
+**- Node.js 18+ installed
 - Firebase account
 - Google Gemini API key (for AI-powered waste detection)
 - Git (optional)
 
-### Step 1: Clone and Install
-
+**### Step 1: Clone and Install
+**
 ```bash
 # Navigate to project directory
 cd AutonomousHacks_HackHive26-backend-firebase
