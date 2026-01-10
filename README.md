@@ -1,50 +1,114 @@
-# CleanCity - Municipal Garbage Management System
+# CleanCity – Swachh Agent AI
 
-A comprehensive web application for managing municipal garbage reporting, cleaning, and administration. Built with React, Firebase, and Google Gemini AI for intelligent waste detection and verification.
+Autonomous Municipal Garbage Intelligence Platform
 
-## 🎯 Project Overview
+CleanCity is an AI-powered, agent-driven waste management platform that enables verified citizens, verified municipal sweepers, and municipal authorities to report, prioritize, clean, and verify garbage using live camera capture, GPS validation, and Gemini AI-based visual intelligence.
 
-CleanCity is a three-role municipal waste management platform that connects citizens, sweepers, and administrators in a unified ecosystem for reporting, cleaning, and managing garbage issues in cities.
+Unlike traditional complaint apps, CleanCity operates as a self-governing AI system that verifies every report, assigns tasks autonomously, and confirms cleaning using before-and-after image analysis.
 
-### User Roles
+## Project Vision
 
-1. **Citizen** - Report garbage issues in their area
-2. **Sweeper** - View assigned tasks and capture after-cleaning photos
-3. **Admin** - Manage users, approve accounts, view reports on map, and monitor system
+Cities fail not because of lack of complaints, but because of fake reports, poor prioritization, and no verification of cleaning.
 
----
+CleanCity solves this by creating a closed-loop AI agent that:
 
-## ✨ Features
+  1.Sees garbage from citizen photos
 
-### 👤 Citizen Features
-- 🔐 **Authentication** - Email/Password registration and login
-- 📸 **Camera-based Reporting** - Live camera capture (no gallery uploads) for garbage reporting
-- 📍 **GPS Location Tracking** - Automatic location capture at upload time
-- 📊 **Personal Dashboard** - View statistics, recent reports, and activity
-- 📋 **Reports Management** - Track all submitted reports with status updates
-- 🏆 **Leaderboard** - See top contributors and your ranking
-- ✅ **Real-time Status Updates** - Track report status (pending → assigned/fake → verified)
-- 💰 **Points System** - Earn points for valid reports and verified cleanups
+  2.Verifies authenticity & location
 
-### 🧹 Sweeper Features
-- 📋 **My Tasks** - View all assigned garbage cleaning tasks
-- 📷 **Capture Clean** - Live camera and location tracking for after-cleaning verification
-- 🖼️ **Cleanups Gallery** - View all completed cleaning tasks with photos
-- 🏆 **Sweeper Leaderboard** - Compete with other sweepers based on cleaning contributions
-- 📊 **Statistics** - Track total cleanings, points earned, and performance
-- ✅ **Task Management** - View task details, location, and status
+  3.Classifies urgency
 
-### 👨‍💼 Admin Features
-- 📊 **Dashboard** - System overview with statistics and analytics
-- 👥 **User Approval** - Approve or reject citizen and sweeper registrations
-- 🗺️ **Reports Map** - Visualize all garbage reports on an interactive map
-- 🏆 **Leaderboard Management** - View and manage leaderboards for citizens and sweepers
-- 📈 **Analytics** - Monitor system performance, reports, and user activity
-- 🔍 **Report Verification** - Review and manage garbage reports
+  4.Assigns nearest sweeper
+
+  5.Confirms cleaning
+
+  6.Rewards honesty
+
+  7.Penalizes fraud
+
+## User Roles (Municipality Verified)
+
+All users must be approved by municipality before using the system.
+
+| Role        | Responsibility                        |
+| ----------- | ------------------------------------- |
+| **Citizen** | Reports garbage using live camera     |
+| **Sweeper** | Cleans assigned locations             |
+| **Admin**   | Approves users, monitors AI decisions |
 
 ---
 
-## 🏗️ Project Structure
+## Features
+
+###  Citizen Features
+-  **Authentication** - Email/Password registration and login
+-  **Camera-based Reporting** - Live camera capture (no gallery uploads) for garbage reporting
+-  **GPS Location Tracking** - Automatic location capture at upload time
+-  **Personal Dashboard** - View statistics, recent reports, and activity
+-  **Reports Management** - Track all submitted reports with status updates
+-  **Leaderboard** - See top contributors and your ranking
+-  **Real-time Status Updates** - Track report status (pending → assigned/fake → verified)
+-  **Points System** - Earn points for valid reports and verified cleanups
+
+###  Sweeper Features
+-  **My Tasks** - View all assigned garbage cleaning tasks
+-  **Capture Clean** - Live camera and location tracking for after-cleaning verification
+-  **Cleanups Gallery** - View all completed cleaning tasks with photos
+-  **Sweeper Leaderboard** - Compete with other sweepers based on cleaning contributions
+-  **Statistics** - Track total cleanings, points earned, and performance
+-  **Task Management** - View task details, location, and status
+
+###  Admin Features
+-  **Dashboard** - System overview with statistics and analytics
+-  **User Approval** - Approve or reject citizen and sweeper registrations
+-  **Reports Map** - Visualize all garbage reports on an interactive map
+-  **Leaderboard Management** - View and manage leaderboards for citizens and sweepers
+-  **Analytics** - Monitor system performance, reports, and user activity
+-  **Report Verification** - Review and manage garbage reports
+
+---
+---
+## Camera & Location Integrity
+
+CleanCity enforces real-world truth.
+
+✔ Live camera only (no gallery uploads)
+✔ GPS captured at upload time
+✔ Timestamp bound to image
+✔ AI checks fake or blank images
+✔ Location mismatch detection
+
+This prevents:
+  1.Old photos
+  2.Screenshots
+  3.Fake complaints
+  4.Spoofed locations
+
+## Gemini AI Capabilities
+
+Gemini is used for visual intelligence, not for location.
+
+It performs:
+  1.Garbage detection
+  2.Dry vs wet waste classification
+  3.Visual clutter estimation
+  4.Priority scoring
+  5.Before vs After comparison
+  6.Fake / blank image detection
+
+GPS is validated using metadata + system logic.
+
+## AI Priority Engine
+ Each report is classified automatically:
+ | Level     | Meaning       | Action             |
+| --------- | ------------- | ------------------ |
+| 🔴 Red    | Heavy garbage | Immediate cleaning |
+| 🟡 Yellow | Medium        | Urgent             |
+| 🟢 Green  | Small         | Clean on route     |
+
+---
+
+##  Project Structure
 
 ```
 AutonomousHacks_HackHive26-backend-firebase/
@@ -268,113 +332,40 @@ The app will open at `http://localhost:5173` (Vite default port)
 
 ---
 
-## 🔄 Application Workflow
+## Trust-Based Reward System
 
-### Citizen Report Flow
+Points are awarded only after AI verification.
 
-1. **Registration/Login**
-   - Citizen registers with email/password
-   - Selects "Citizen" role
-   - Admin approves account (if approval required)
+| Action                 | Citizen | Sweeper |
+| ---------------------- | ------- | ------- |
+| Valid garbage detected | +2      | –       |
+| Cleaning verified      | +2      | +4      |
+| Fake upload            | 0       | Penalty |
 
-2. **Report Garbage**
-   - Navigate to "Report" page
-   - Camera automatically starts
-   - Location is captured
-   - Take photo of garbage
-   - Upload report
-
-3. **Backend Processing**
-   - Image uploaded to `reports/before/{reportId}.jpg`
-   - Report saved to Firestore with `status: "pending"`
-   - Cloud Function triggers (`onReportUpload`)
-   - Gemini AI analyzes image:
-     - Detects if waste is present
-     - Classifies as dry/wet
-     - Assigns priority (red/yellow/green)
-   - Status updated to `"assigned"` or `"fake"`
-
-4. **Points Award**
-   - If valid report: Citizen gets +50 points
-   - If fake: No points awarded
-
-### Sweeper Cleanup Flow
-
-1. **Registration/Login**
-   - Sweeper registers with email/password
-   - Selects "Sweeper" role
-   - Admin approves account
-
-2. **View Assigned Tasks**
-   - Sweeper dashboard shows all assigned reports
-   - Tasks filtered by `assignedTo: sweeperId`
-
-3. **Capture Clean**
-   - Click "Capture Clean" in sidebar
-   - Navigate to camera page with task details
-   - Live camera and location tracking start
-   - Take photo after cleaning
-   - Upload with live location
-
-4. **Verification**
-   - Image uploaded to `reports/after/{reportId}.jpg`
-   - Cloud Function triggers (`onAfterCleanUpload`)
-   - Gemini AI verifies if area is clean
-   - Report status updated to `"verified"`
-   - Points awarded:
-     - Sweeper: +50 points
-     - Citizen: +50 points
-
-### Admin Management Flow
-
-1. **User Approval**
-   - View pending user registrations
-   - Approve or reject accounts
-   - Users can only access system after approval
-
-2. **Reports Monitoring**
-   - View all reports on interactive map
-   - Filter by status, priority, or date
-   - Assign reports to sweepers manually (if needed)
-
-3. **Analytics**
-   - View system statistics
-   - Monitor user activity
-   - Track report completion rates
-
----
-
-## 💰 Points System
-
-| Action | Citizen Points | Sweeper Points |
-|--------|----------------|----------------|
-| Valid garbage report | +50 | - |
-| Report verified as cleaned | +50 | +50 |
-| Invalid/fake report | 0 | - |
 
 **Leaderboard Rankings:**
 - Citizens ranked by total points
 - Sweepers ranked by total cleanings and points
+- Leaderboards are based on verified impact, not uploads.
+
+## Google Maps Usage
+  Maps API is used to:
+  Show garbage locations
+  Display sweeper routes
+  Find nearest available cleaner
+  Group multiple reports from same area
 
 ---
 
-## 🛠️ Technologies Used
+## Tech Stack
 
-### Frontend
-- **React 18** - UI library
-- **React Router DOM 6** - Client-side routing
-- **Vite** - Build tool and dev server
-- **Firebase SDK 12** - Authentication, Firestore, Storage
-
-### Backend
-- **Firebase Cloud Functions** - Serverless backend
-- **Google Gemini AI** - Image analysis and waste detection
-- **Firebase Admin SDK** - Server-side Firebase operations
-
-### Styling
-- **CSS3** - Custom styling with CSS variables
-- **Blue/Sky Blue Theme** - Consistent color scheme across all dashboards
-- **Responsive Design** - Mobile and desktop support
+| Layer         | Technology                                     |
+| ------------- | ---------------------------------------------- |
+| Frontend      | React + PWA                                    |
+| Backend       | Firebase (Auth, Firestore, Storage, Functions) |
+| AI            | Google Gemini Vision                           |
+| Maps          | Google Maps API                                |
+| Notifications | Firebase Cloud Messaging                       |
 
 ---
 
@@ -399,34 +390,6 @@ The app will open at `http://localhost:5173` (Vite default port)
 
 ---
 
-## 🏗️ Build for Production
-
-```bash
-# Build the application
-npm run build
-
-# Preview production build
-npm run preview
-```
-
-The built files will be in the `dist/` directory, ready for deployment to:
-- Firebase Hosting
-- Netlify
-- Vercel
-- Any static hosting service
-
-### Deploy to Firebase Hosting
-
-```bash
-# Initialize hosting (if not done)
-firebase init hosting
-
-# Deploy
-firebase deploy --only hosting
-```
-
----
-
 ## 🔒 Security Considerations
 
 1. **Authentication Required** - All routes protected by Firebase Auth
@@ -434,47 +397,6 @@ firebase deploy --only hosting
 3. **Storage Rules** - Only authenticated users can upload/read images
 4. **Firestore Rules** - Users can only modify their own data
 5. **API Keys** - Keep Firebase and Gemini keys secure (use environment variables)
-
----
-
-## 🐛 Troubleshooting
-
-### Camera Not Working
-- **Issue**: Camera doesn't start
-- **Solution**: 
-  - Ensure you're on HTTPS or localhost
-  - Check browser permissions for camera access
-  - Try a different browser
-
-### Location Not Capturing
-- **Issue**: GPS location not available
-- **Solution**:
-  - Enable location permissions in browser
-  - Check device GPS settings
-  - Try on a device with GPS (not desktop without location services)
-
-### Firebase Connection Errors
-- **Issue**: Cannot connect to Firebase
-- **Solution**:
-  - Verify Firebase config in `src/firebase.js`
-  - Check internet connection
-  - Verify Firebase project is active
-  - Check Firebase console for service status
-
-### Functions Not Triggering
-- **Issue**: Cloud Functions not executing
-- **Solution**:
-  - Verify functions are deployed: `firebase functions:list`
-  - Check Firebase Console → Functions for errors
-  - Verify Gemini API key is set correctly
-  - Check function logs in Firebase Console
-
-### User Role Issues
-- **Issue**: Wrong dashboard after login
-- **Solution**:
-  - Check user document in Firestore `users` collection
-  - Verify `role` field is set correctly
-  - Ensure user document exists after registration
 
 ---
 
@@ -488,40 +410,32 @@ firebase deploy --only hosting
 - `GET_FIREBASE_CREDENTIALS.md` - How to get Firebase credentials
 
 ---
+## Why CleanCity is Agentic AI
 
-## 🤝 Contributing
+CleanCity is not a form-based app.
+It is a Swachh Agent that:
+  - Observes the city
+  - Understands waste
+  - Makes decisions
+  - Executes cleaning
+  - Verifies results
+  - Learns user trust
 
-This is a municipal corporation initiative. For contributions:
-1. Follow the existing code style
-2. Test all features before submitting
-3. Update documentation as needed
+This is autonomous urban sanitation.
+
+
+## Future Enhancements
+
+  - Smart bins & IoT integration
+  - Drone-based waste scanning
+  - Predictive garbage hotspots
+  - Government ERP integration
+  - Citizen reward partnerships
+---
+---
+## CleanCity = AI That Cleans Cities
+
+A real-time, AI-verified, location-trusted waste intelligence platform for smart cities.
 
 ---
 
-## 📄 License
-
-A Municipal Corporation Initiative
-
----
-
-## 👥 Support
-
-For issues or questions:
-- Check `TROUBLESHOOTING.md`
-- Review Firebase Console logs
-- Check browser console for errors
-
----
-
-## 🎯 Future Enhancements
-
-- Push notifications for task assignments
-- In-app messaging between users
-- Advanced analytics dashboard
-- Mobile app versions (iOS/Android)
-- Multi-language support
-- Integration with municipal systems
-
----
-
-**Built with ❤️ for Clean Cities**
