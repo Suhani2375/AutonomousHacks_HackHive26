@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Admin Account</title>
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js';
+        import { getAuth, createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js';
+        import { getFirestore, doc, setDoc } from 'https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyB2FwKH4GkJhoztuOlWFRuapG9TvrJaN_I",
+            authDomain: "hackhive-autonomous.firebaseapp.com",
+            projectId: "hackhive-autonomous",
+            storageBucket: "hackhive-autonomous.firebasestorage.app",
+            messagingSenderId: "853119952270",
+            appId: "1:853119952270:web:7b4a0105d57cce7b08b0df",
+            measurementId: "G-GZECFQCR3Q"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        window.createAdmin = async function() {
+            const adminId = document.getElementById('adminId').value || 'admin';
+            const password = document.getElementById('password').value || 'admin123';
+            const name = document.getElementById('name').value || 'Admin User';
+            const resultDiv = document.getElementById('result');
+
+            if (password.length < 6) {
+                resultDiv.innerHTML = '<p style="color: red;">❌ Password must be at least 6 characters</p>';
+                return;
+            }
+
+            try {
+                resultDiv.innerHTML = '<p>⏳ Creating admin account...</p>';
+                const email = `${adminId}@municipality.gov`;
+                
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const userId = userCredential.user.uid;
+                
+                await setDoc(doc(db, 'users', userId), {
+                    email: email,
+                    name: name,
+                    role: 'admin',
+                    status: 'approved',
+                    points: 0,
+                    createdAt: new Date(),
+                    totalReports: 0,
+                    totalCleaned: 0
+                });
+                
+                resultDiv.innerHTML = `
+                    <p style="color: green;">✅ Admin account created successfully!</p>
+                    <p><strong>Login Credentials:</strong></p>
+                    <p>Admin ID: <code>${adminId}</code></p>
+                    <p>Email: <code>${email}</code></p>
+                    <p>Password: <code>${'*'.repeat(password.length)}</code></p>
+                    <p><a href="http://localhost:3002/login" target="_blank">Go to Admin Portal →</a></p>
+                `;
+            } catch (error) {
+                if (error.code === 'auth/email-already-in-use') {
+                    resultDiv.innerHTML = '<p style="color: orange;">⚠️ This admin account already exists!</p>';
+                } else {
+                    resultDiv.innerHTML = `<p style="color: red;">❌ Error: ${error.message}</p>`;
+                }
+            }
+        };
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #3B82F6;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #2563EB;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 5px;
+        }
+        code {
+            background: #e5e5e5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔐 Create Admin Account</h1>
+        <p style="color: #666;">Create an admin account for the CleanCity Admin Portal</p>
+        
+        <div class="form-group">
+            <label for="adminId">Admin ID:</label>
+            <input type="text" id="adminId" placeholder="admin" value="admin">
+        </div>
+        
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" placeholder="admin123" value="admin123">
+        </div>
+        
+        <div class="form-group">
+            <label for="name">Admin Name:</label>
+            <input type="text" id="name" placeholder="Admin User" value="Admin User">
+        </div>
+        
+        <button onclick="createAdmin()">Create Admin Account</button>
+        
+        <div id="result"></div>
+    </div>
+</body>
+</html>
+

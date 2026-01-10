@@ -1,0 +1,198 @@
+.dashboard-layout {
+  display: flex;
+  min-height: 100vh;
+  background: #1F2937;
+}
+
+.dashboard-content {
+  flex: 1;
+  margin-left: 260px;
+  padding: 32px;
+  overflow-y: auto;
+}
+
+.dashboard-header {
+  margin-bottom: 32px;
+}
+
+.dashboard-header h1 {
+  font-size: 32px;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 8px;
+}
+
+.dashboard-header p {
+  font-size: 16px;
+  color: #9CA3AF;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.stat-card {
+  background: #374151;
+  border-radius: 16px;
+  padding: 24px;
+  border: 1px solid #4B5563;
+}
+
+.stat-icon {
+  font-size: 32px;
+  margin-bottom: 12px;
+}
+
+.stat-icon.orange {
+  color: #F59E0B;
+}
+
+.stat-icon.blue {
+  color: #3B82F6;
+}
+
+.stat-icon.red {
+  color: #EF4444;
+}
+
+.stat-icon.green {
+  color: #10B981;
+}
+
+.stat-value {
+  font-size: 32px;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 4px;
+}
+
+.stat-label {
+  font-size: 14px;
+  color: #9CA3AF;
+  margin-bottom: 8px;
+}
+
+.stat-change {
+  font-size: 12px;
+  color: #6B7280;
+}
+
+.dashboard-sections {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.section-card {
+  background: #374151;
+  border-radius: 16px;
+  padding: 24px;
+  border: 1px solid #4B5563;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.section-icon {
+  font-size: 24px;
+}
+
+.section-header h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: white;
+}
+
+.activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.activity-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.activity-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-top: 6px;
+  flex-shrink: 0;
+}
+
+.activity-text {
+  flex: 1;
+  font-size: 14px;
+  color: #D1D5DB;
+}
+
+.activity-time {
+  font-size: 12px;
+  color: #6B7280;
+  margin-top: 4px;
+}
+
+.weekly-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.weekly-stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.weekly-stat-label {
+  font-size: 14px;
+  color: #9CA3AF;
+}
+
+.weekly-stat-value {
+  font-size: 24px;
+  font-weight: bold;
+  color: white;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: #1F2937;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 4px;
+}
+
+.progress-fill.blue {
+  background: #3B82F6;
+}
+
+.progress-fill.green {
+  background: #10B981;
+}
+
+.progress-fill.orange {
+  background: #F59E0B;
+}
+
+.loading {
+  text-align: center;
+  padding: 60px;
+  color: #9CA3AF;
+}
+

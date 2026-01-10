@@ -1,0 +1,166 @@
+.tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.tab {
+  padding: 12px 24px;
+  background: #374151;
+  border: 1px solid #4B5563;
+  border-radius: 8px;
+  color: #9CA3AF;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+
+.tab.active {
+  background: #3B82F6;
+  color: white;
+  border-color: #3B82F6;
+}
+
+.top-three {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.top-card {
+  background: #374151;
+  border-radius: 16px;
+  padding: 24px;
+  text-align: center;
+  border: 1px solid #4B5563;
+  flex: 1;
+  max-width: 200px;
+}
+
+.top-card.first {
+  border: 3px solid #FCD34D;
+}
+
+.medal-icon {
+  font-size: 48px;
+  margin-bottom: 12px;
+}
+
+.top-avatar {
+  width: 60px;
+  height: 60px;
+  background: #1F2937;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 600;
+  color: white;
+  margin: 0 auto 12px;
+}
+
+.top-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 4px;
+}
+
+.top-zone {
+  font-size: 12px;
+  color: #9CA3AF;
+  margin-bottom: 12px;
+}
+
+.top-score {
+  font-size: 28px;
+  font-weight: bold;
+  color: #3B82F6;
+  margin-bottom: 4px;
+}
+
+.top-reports {
+  font-size: 12px;
+  color: #6B7280;
+}
+
+.leaderboard-table {
+  background: #374151;
+  border-radius: 16px;
+  padding: 24px;
+  border: 1px solid #4B5563;
+  overflow-x: auto;
+}
+
+.leaderboard-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.leaderboard-table thead {
+  border-bottom: 1px solid #4B5563;
+}
+
+.leaderboard-table th {
+  text-align: left;
+  padding: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #9CA3AF;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.leaderboard-table td {
+  padding: 16px 12px;
+  border-bottom: 1px solid #4B5563;
+  color: #D1D5DB;
+  font-size: 14px;
+}
+
+.user-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-avatar-small {
+  width: 32px;
+  height: 32px;
+  background: #1F2937;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  color: white;
+  font-size: 12px;
+}
+
+.zone-badge {
+  padding: 4px 12px;
+  background: #1F2937;
+  border-radius: 12px;
+  font-size: 12px;
+  color: #9CA3AF;
+}
+
+.points-cell {
+  font-size: 18px;
+  font-weight: bold;
+  color: #3B82F6;
+}
+
+.loading {
+  text-align: center;
+  padding: 60px;
+  color: #9CA3AF;
+}
+
