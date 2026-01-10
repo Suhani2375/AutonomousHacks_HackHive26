@@ -1,110 +1,108 @@
-# CleanCity – Swachh Agent AI
+# CleanCity – Swachh Agent AI  
 
-Autonomous Municipal Garbage Intelligence Platform
+**Autonomous Municipal Garbage Intelligence Platform**
 
-CleanCity is an AI-powered, agent-driven waste management platform that enables verified citizens, verified municipal sweepers, and municipal authorities to report, prioritize, clean, and verify garbage using live camera capture, GPS validation, and Gemini AI-based visual intelligence.
+CleanCity is an AI-powered, agent-driven waste management system that enables **verified citizens**, **municipal sweepers**, and **city authorities** to report, prioritize, clean, and verify garbage using **live camera capture**, **GPS validation**, and **Gemini-powered visual intelligence**.
 
-Unlike traditional complaint apps, CleanCity operates as a self-governing AI system that verifies every report, assigns tasks autonomously, and confirms cleaning using before-and-after image analysis.
+Unlike traditional complaint apps, CleanCity works as a **closed-loop AI system** that verifies every report, assigns tasks automatically, and confirms cleaning using **before-and-after image analysis**.
+
+---
 
 ## Project Vision
 
-Cities fail not because of lack of complaints, but because of fake reports, poor prioritization, and no verification of cleaning.
+Cities do not fail because of a lack of complaints — they fail due to:
 
-CleanCity solves this by creating a closed-loop AI agent that:
+- Fake reports  
+- Poor prioritization  
+- No cleaning verification  
 
-  1.Sees garbage from citizen photos
+CleanCity fixes this using an **autonomous AI agent** that:
 
-  2.Verifies authenticity & location
+1. Detects garbage from citizen photos  
+2. Verifies authenticity and location  
+3. Classifies urgency  
+4. Assigns the nearest sweeper  
+5. Confirms cleaning  
+6. Rewards honest users  
+7. Penalizes abuse  
 
-  3.Classifies urgency
-
-  4.Assigns nearest sweeper
-
-  5.Confirms cleaning
-
-  6.Rewards honesty
-
-  7.Penalizes fraud
+---
 
 ## User Roles (Municipality Verified)
 
-All users must be approved by municipality before using the system.
+All users must be approved by the municipality.
 
-| Role        | Responsibility                        |
-| ----------- | ------------------------------------- |
-| **Citizen** | Reports garbage using live camera     |
-| **Sweeper** | Cleans assigned locations             |
-| **Admin**   | Approves users, monitors AI decisions |
+| Role | Responsibility |
+|------|----------------|
+| **Citizen** | Reports garbage using live camera |
+| **Sweeper** | Cleans assigned locations |
+| **Admin** | Approves users, monitors AI decisions |
 
 ---
 
 ## Features
 
-###  Citizen Features
--  **Authentication** - Email/Password registration and login
--  **Camera-based Reporting** - Live camera capture (no gallery uploads) for garbage reporting
--  **GPS Location Tracking** - Automatic location capture at upload time
--  **Personal Dashboard** - View statistics, recent reports, and activity
--  **Reports Management** - Track all submitted reports with status updates
--  **Leaderboard** - See top contributors and your ranking
--  **Real-time Status Updates** - Track report status (pending → assigned/fake → verified)
--  **Points System** - Earn points for valid reports and verified cleanups
+### Citizen
+- Live camera garbage reporting  
+- GPS-based location capture  
+- Report tracking (Pending → Assigned → Verified/Fake)  
+- Leaderboard & points  
+- Personal dashboard  
 
-###  Sweeper Features
--  **My Tasks** - View all assigned garbage cleaning tasks
--  **Capture Clean** - Live camera and location tracking for after-cleaning verification
--  **Cleanups Gallery** - View all completed cleaning tasks with photos
--  **Sweeper Leaderboard** - Compete with other sweepers based on cleaning contributions
--  **Statistics** - Track total cleanings, points earned, and performance
--  **Task Management** - View task details, location, and status
+### Sweeper
+- Assigned cleaning tasks  
+- Live camera + GPS for after-clean verification  
+- Performance statistics  
+- Sweeper leaderboard  
 
-###  Admin Features
--  **Dashboard** - System overview with statistics and analytics
--  **User Approval** - Approve or reject citizen and sweeper registrations
--  **Reports Map** - Visualize all garbage reports on an interactive map
--  **Leaderboard Management** - View and manage leaderboards for citizens and sweepers
--  **Analytics** - Monitor system performance, reports, and user activity
--  **Report Verification** - Review and manage garbage reports
+### Admin
+- User approval system  
+- City-wide garbage map  
+- AI verification control  
+- Analytics & monitoring  
+- Leaderboard management  
 
 ---
----
+
 ## Camera & Location Integrity
 
-CleanCity enforces real-world truth.
+CleanCity enforces **real-world truth**.
 
-✔ Live camera only (no gallery uploads)
-✔ GPS captured at upload time
-✔ Timestamp bound to image
-✔ AI checks fake or blank images
-✔ Location mismatch detection
+✔ Live camera only (no gallery)  
+✔ GPS captured at upload  
+✔ Timestamp bound to image  
+✔ AI fake & blank detection  
+✔ Location mismatch detection  
 
-This prevents:
-  1.Old photos
-  2.Screenshots
-  3.Fake complaints
-  4.Spoofed locations
+Prevents:
+- Old photos  
+- Screenshots  
+- Fake reports  
+- GPS spoofing  
+
+---
 
 ## Gemini AI Capabilities
 
-Gemini is used for visual intelligence, not for location.
+Gemini is used for **visual intelligence**, not location.
 
 It performs:
-  1.Garbage detection
-  2.Dry vs wet waste classification
-  3.Visual clutter estimation
-  4.Priority scoring
-  5.Before vs After comparison
-  6.Fake / blank image detection
+- Garbage detection  
+- Dry vs wet classification  
+- Clutter estimation  
+- Priority scoring  
+- Before vs after comparison  
+- Fake image detection  
 
-GPS is validated using metadata + system logic.
+---
 
 ## AI Priority Engine
- Each report is classified automatically:
- | Level     | Meaning       | Action             |
-| --------- | ------------- | ------------------ |
-| 🔴 Red    | Heavy garbage | Immediate cleaning |
-| 🟡 Yellow | Medium        | Urgent             |
-| 🟢 Green  | Small         | Clean on route     |
+
+| Level | Meaning | Action |
+|------|--------|--------|
+| Red | Heavy garbage | Immediate |
+| Yellow | Medium | Urgent |
+| Green | Small | On-route |
 
 ---
 
@@ -112,86 +110,58 @@ GPS is validated using metadata + system logic.
 
 ```
 AutonomousHacks_HackHive26-backend-firebase/
-├── functions/                    # Firebase Cloud Functions (Backend)
-│   ├── index.js                 # AI-powered report processing with Gemini
-│   ├── package.json          # Backend dependencies
-│   └── package-lock.json
+├── functions/ # Firebase Cloud Functions
+│ └── index.js # Gemini-powered AI logic
 ├── src/
-│   ├── pages/                   # React page components
-│   │   ├── Login.jsx            # Login page with role selection
-│   │   ├── Register.jsx         # Registration with citizen/sweeper role
-│   │   ├── Dashboard.jsx        # Citizen dashboard
-│   │   ├── Reports.jsx          # Citizen reports list
-│   │   ├── Leaderboard.jsx      # Citizen leaderboard
-│   │   ├── Report.jsx           # Camera-based garbage reporting
-│   │   ├── AdminDashboard.jsx   # Admin dashboard
-│   │   ├── AdminUserApproval.jsx # User approval interface
-│   │   ├── AdminReportsMap.jsx  # Reports visualization map
-│   │   ├── AdminLeaderboard.jsx # Admin leaderboard view
-│   │   ├── SweeperDashboard.jsx # Sweeper dashboard
-│   │   ├── SweeperTaskDetail.jsx # Task details view
-│   │   ├── SweeperCamera.jsx    # Camera component (legacy)
-│   │   └── SweeperCaptureClean.jsx # Live camera and location capture
-│   ├── firebase.js              # Firebase configuration
-│   ├── App.jsx                  # Main app with routing and role-based access
-│   ├── App.css                  # Global styles with blue/sky blue theme
-│   ├── ErrorBoundary.jsx        # Error handling component
-│   └── index.jsx                # App entry point
+│ ├── pages/ # React Pages
+│ ├── firebase.js # Firebase config
+│ ├── App.jsx # Routing & role access
+│ └── index.jsx # App entry
 ├── public/
-│   └── index.html               # HTML template
-├── firebase.json                 # Firebase configuration
-├── vite.config.js               # Vite build configuration
-├── package.json                 # Frontend dependencies
-└── README.md                    # This file
+├── firebase.json
+├── vite.config.js
+├── package.json
+└── README.md
 ```
 
 ---
+---
 
-## 🔥 Firebase Collections
+## Firestore Data Model
 
-### `users` Collection
-```javascript
+### users
+```js
 {
-  uid: string,
-  email: string,
-  displayName: string,
+  uid,
+  email,
+  displayName,
   role: "citizen" | "sweeper" | "admin",
-  points: number,
-  totalReports: number,
-  totalCleaned: number,
-  approved: boolean,        // For admin approval
-  createdAt: timestamp
+  points,
+  totalReports,
+  totalCleaned,
+  approved,
+  createdAt
 }
-```
 
-### `reports` Collection
-```javascript
+
+### reports 
 {
-  id: string,
-  citizenId: string,
-  imageBefore: string,      // Storage URL
-  imageAfter: string,        // Storage URL (after cleaning)
-  status: "pending" | "assigned" | "fake" | "verified",
-  location: {
-    lat: number,
-    lng: number
-  },
-  locationName: string,      // Human-readable location
-  assignedTo: string,        // Sweeper UID
-  wasteType: "dry" | "wet",
-  priority: "red" | "yellow" | "green",
-  createdAt: timestamp,
-  cleanedAt: timestamp,
-  cleanedLocation: {
-    lat: number,
-    lng: number
-  }
+  citizenId,
+  imageBefore,
+  imageAfter,
+  status,
+  location,
+  assignedTo,
+  wasteType,
+  priority,
+  createdAt,
+  cleanedAt
 }
-```
+
 
 ---
 
-## 🚀 Setup Instructions
+## Setup Instructions
 
 ### Prerequisites
 - Node.js 18+ installed
@@ -348,8 +318,8 @@ Points are awarded only after AI verification.
 - Sweepers ranked by total cleanings and points
 - Leaderboards are based on verified impact, not uploads.
 
-## Google Maps Usage
-  Maps API is used to:
+## Google Maps 
+  Used for :
   Show garbage locations
   Display sweeper routes
   Find nearest available cleaner
@@ -364,7 +334,7 @@ Points are awarded only after AI verification.
 | Frontend      | React + PWA                                    |
 | Backend       | Firebase (Auth, Firestore, Storage, Functions) |
 | AI            | Google Gemini Vision                           |
-| Maps          | Google Maps API                                |
+| Maps          | Google Maps                                |
 | Notifications | Firebase Cloud Messaging                       |
 
 ---
@@ -390,14 +360,15 @@ Points are awarded only after AI verification.
 
 ---
 
-## 🔒 Security Considerations
+## Security
 
-1. **Authentication Required** - All routes protected by Firebase Auth
-2. **Role-based Access** - Users can only access routes for their role
-3. **Storage Rules** - Only authenticated users can upload/read images
-4. **Firestore Rules** - Users can only modify their own data
-5. **API Keys** - Keep Firebase and Gemini keys secure (use environment variables)
+- **Firebase Authentication**
+- **Role-based routing**
+- **Secure Firestore & Storage rules**
+- **Live camera enforcement**
+- **No gallery uploads**
 
+---
 ---
 
 ## 📚 Additional Documentation
@@ -412,17 +383,17 @@ Points are awarded only after AI verification.
 ---
 ## Why CleanCity is Agentic AI
 
-CleanCity is not a form-based app.
-It is a Swachh Agent that:
-  - Observes the city
-  - Understands waste
-  - Makes decisions
-  - Executes cleaning
-  - Verifies results
-  - Learns user trust
+CleanCity is not a form-based complaint app.  
+It is an **autonomous sanitation agent** that:
 
-This is autonomous urban sanitation.
+- **Observes**
+- **Understands**
+- **Decides**
+- **Acts**
+- **Verifies**
+- **Learns**
 
+---
 
 ## Future Enhancements
 
@@ -435,7 +406,7 @@ This is autonomous urban sanitation.
 ---
 ## CleanCity = AI That Cleans Cities
 
-A real-time, AI-verified, location-trusted waste intelligence platform for smart cities.
+*A real-time, AI-verified, location-trusted waste intelligence platform for smart cities.*
 
 ---
 
