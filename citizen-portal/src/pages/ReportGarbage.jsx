@@ -101,37 +101,103 @@ function ReportGarbage() {
       await uploadBytes(imageRef, photo);
       const imageUrl = await getDownloadURL(imageRef);
 
-      // Get address from coordinates (reverse geocoding)
-      let address = 'Unknown Location';
-      try {
-        const response = await fetch(
-          `https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.lat},${location.lng}&key=${import.meta.env.VITE_GOOGLE_MAPS_API_KEY || ''}`
-        );
-        const data = await response.json();
-        if (data.results && data.results.length > 0) {
-          address = data.results[0].formatted_address;
+      // Get precise address from coordinates (reverse geocoding)
+      let address = `Lat: ${location.lat.toFixed(6)}, Lng: ${location.lng.toFixed(6)}`;
+      const mapsApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+      
+      // Try Google Maps first (most accurate)
+      if (mapsApiKey) {
+        try {
+          const response = await fetch(
+            `https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.lat},${location.lng}&key=${mapsApiKey}&result_type=street_address|route|premise|point_of_interest`
+          );
+          const data = await response.json();
+          if (data.status === 'OK' && data.results && data.results.length > 0) {
+            // Use the most specific result
+            address = data.results[0].formatted_address;
+            console.log('✅ Google Maps geocoding successful:', address);
+          } else if (data.error_message) {
+            console.error('Google Maps API error:', data.error_message);
+          }
+        } catch (error) {
+          console.error('Error getting address from Google Maps:', error);
         }
-      } catch (error) {
-        console.error('Error getting address:', error);
+      }
+      
+      // Fallback to OpenStreetMap (free, accurate)
+      if (address.includes('Lat:') || address.includes('Lng:')) {
+        try {
+          const response = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${location.lat}&lon=${location.lng}&zoom=18&addressdetails=1`,
+            {
+              headers: {
+                'User-Agent': 'NeuroClean-Waste-Management/1.0'
+              }
+            }
+          );
+          const data = await response.json();
+          if (data.display_name) {
+            // Format OpenStreetMap address nicely
+            const parts = [];
+            if (data.address) {
+              if (data.address.road) parts.push(data.address.road);
+              if (data.address.house_number) parts.push(data.address.house_number);
+              if (data.address.suburb || data.address.neighbourhood) {
+                parts.push(data.address.suburb || data.address.neighbourhood);
+              }
+              if (data.address.city || data.address.town || data.address.village) {
+                parts.push(data.address.city || data.address.town || data.address.village);
+              }
+            }
+            address = parts.length > 0 ? parts.join(', ') : data.display_name;
+            console.log('✅ OpenStreetMap geocoding successful:', address);
+          }
+        } catch (error) {
+          console.error('Error with OpenStreetMap geocoding:', error);
+          // Final fallback - formatted coordinates
+          address = `${location.lat.toFixed(6)}, ${location.lng.toFixed(6)}`;
+        }
       }
 
-      // Create report in Firestore
-      await addDoc(collection(db, 'reports'), {
+      // Get current timestamp for location validation
+      const photoTimestamp = Date.now();
+      const locationTimestamp = new Date().toISOString();
+      
+      // Create report in Firestore with timestamp validation
+      const reportData = {
         citizenId: user.uid,
         imageBefore: imageUrl,
         location: {
           lat: location.lat,
           lng: location.lng,
-          address: address
+          address: address,
+          timestamp: locationTimestamp, // For location validation
+          photoTimestamp: photoTimestamp // For matching photo with location
         },
         status: 'pending',
-        priority: 3,
+        priority: 3, // Default priority, will be updated by AI
         createdAt: new Date(),
+        photoTimestamp: photoTimestamp, // Store photo timestamp
+        locationTimestamp: locationTimestamp, // Store location timestamp
+        cameraCaptured: true, // Mark as camera-captured (not gallery)
         history: [{
           status: 'pending',
-          time: new Date()
+          time: new Date(),
+          note: 'Report submitted via camera'
         }]
+      };
+      
+      console.log('📝 Creating report with data:', {
+        citizenId: reportData.citizenId,
+        status: reportData.status,
+        location: reportData.location.address
       });
+      
+      const reportRef = await addDoc(collection(db, 'reports'), reportData);
+      console.log('✅ Report created successfully:', reportRef.id);
+      
+      // Navigate to dashboard after successful submission
+      navigate('/dashboard');
 
       navigate('/dashboard');
     } catch (error) {

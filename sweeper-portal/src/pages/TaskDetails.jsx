@@ -77,6 +77,25 @@ function TaskDetails() {
         </div>
       </div>
 
+      <div className="task-info">
+        <div className="info-row">
+          <span className="info-label">Classification:</span>
+          <span className={`classification-badge classification-${(task.classification || task.aiAnalysisDetails?.classification || 'unknown').toLowerCase()}`}>
+            {(task.classification || task.aiAnalysisDetails?.classification || 'Unknown').toUpperCase()}
+          </span>
+        </div>
+        <div className="info-row">
+          <span className="info-label">Waste Type:</span>
+          <span className="info-value">{task.wasteType || task.aiAnalysisDetails?.wasteType || 'Unknown'}</span>
+        </div>
+        <div className="info-row">
+          <span className="info-label">Severity:</span>
+          <span className={`severity-badge severity-${(task.level || task.aiAnalysisDetails?.severity || 'green').toLowerCase()}`}>
+            {task.level || task.aiAnalysisDetails?.severity || 'green'}
+          </span>
+        </div>
+      </div>
+
       {task.imageBefore && (
         <div className="task-image-container">
           <img src={task.imageBefore} alt="Report" className="task-image" />

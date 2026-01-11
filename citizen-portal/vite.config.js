@@ -9,8 +9,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
       manifest: {
-        name: 'CleanCity - Citizen Portal',
-        short_name: 'CleanCity',
+        name: 'NeuroClean - Citizen Portal',
+        short_name: 'NeuroClean',
         description: 'Municipal Garbage Reporting System',
         theme_color: '#10B981',
         background_color: '#ffffff',

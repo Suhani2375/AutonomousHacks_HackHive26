@@ -1,7 +1,7 @@
 {
-  "name": "cleancity-app",
+  "name": "neuroclean-app",
   "version": "1.0.0",
-  "description": "CleanCity - Municipal Garbage Reporting System",
+  "description": "NeuroClean - Municipal Garbage Reporting System",
   "scripts": {
     "dev": "npm-run-all --parallel dev:citizen dev:sweeper dev:admin dev:landing",
     "dev:citizen": "cd citizen-portal && npm run dev",
@@ -14,7 +14,6 @@
     "build:admin": "cd admin-portal && npm run build",
     "install:all": "npm install && cd citizen-portal && npm install && cd ../sweeper-portal && npm install && cd ../admin-portal && npm install && cd ../functions && npm install",
     "setup": "node setup-env.js && npm run install:all",
-    "create-admin": "node create-admin.js",
     "create-admin": "node create-admin.js"
   },
   "devDependencies": {

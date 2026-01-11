@@ -4,6 +4,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './shared/firebase-config';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
+import Reports from './pages/Reports';
 import UserApproval from './pages/UserApproval';
 import ReportsMap from './pages/ReportsMap';
 import Leaderboard from './pages/Leaderboard';
@@ -34,6 +35,7 @@ function App() {
       <Routes>
         <Route path="/login" element={!user ? <Login /> : <Navigate to="/dashboard" />} />
         <Route path="/dashboard" element={user ? <Dashboard /> : <Navigate to="/login" />} />
+        <Route path="/reports" element={user ? <Reports /> : <Navigate to="/login" />} />
         <Route path="/approval" element={user ? <UserApproval /> : <Navigate to="/login" />} />
         <Route path="/map" element={user ? <ReportsMap /> : <Navigate to="/login" />} />
         <Route path="/leaderboard" element={user ? <Leaderboard /> : <Navigate to="/login" />} />

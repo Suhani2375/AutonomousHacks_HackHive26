@@ -90,7 +90,7 @@ function Login() {
       <div className="login-card">
         <div className="logo-section">
           <div className="logo-icon">♻</div>
-          <h1>CleanCity</h1>
+          <h1>NeuroClean</h1>
           <p>Municipal Garbage Reporting</p>
         </div>
 

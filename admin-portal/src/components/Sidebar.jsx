@@ -20,6 +20,7 @@ function Sidebar() {
 
   const menuItems = [
     { path: '/dashboard', icon: '📊', label: 'Dashboard' },
+    { path: '/reports', icon: '📋', label: 'Reports' },
     { path: '/approval', icon: '👥', label: 'User Approval' },
     { path: '/map', icon: '🗺️', label: 'Reports Map' },
     { path: '/leaderboard', icon: '🏆', label: 'Leaderboard' }
@@ -30,7 +31,7 @@ function Sidebar() {
       <div className="sidebar-header">
         <div className="logo">🛡️</div>
         <div className="logo-text">
-          <div className="logo-title">CleanCity</div>
+          <div className="logo-title">NeuroClean</div>
           <div className="logo-subtitle">Admin Portal</div>
         </div>
       </div>

@@ -9,8 +9,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
       manifest: {
-        name: 'CleanCity - Sweeper Portal',
-        short_name: 'CleanCity',
+        name: 'NeuroClean - Sweeper Portal',
+        short_name: 'NeuroClean',
         description: 'Municipal Garbage Reporting System - Sweeper',
         theme_color: '#F59E0B',
         background_color: '#ffffff',

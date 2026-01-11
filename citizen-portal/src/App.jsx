@@ -6,6 +6,7 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import ReportGarbage from './pages/ReportGarbage';
 import MyReports from './pages/MyReports';
+import ReportDetails from './pages/ReportDetails';
 import Leaderboard from './pages/Leaderboard';
 
 function App() {
@@ -35,7 +36,7 @@ function App() {
   if (loading) {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', flexDirection: 'column' }}>
-        <div style={{ fontSize: '18px', marginBottom: '10px' }}>Loading CleanCity...</div>
+        <div style={{ fontSize: '18px', marginBottom: '10px' }}>Loading NeuroClean...</div>
         <div style={{ fontSize: '14px', color: '#6b7280' }}>Please wait</div>
       </div>
     );
@@ -59,6 +60,7 @@ function App() {
         <Route path="/login" element={!user ? <Login /> : <Navigate to="/dashboard" />} />
         <Route path="/dashboard" element={user ? <Dashboard /> : <Navigate to="/login" />} />
         <Route path="/report" element={user ? <ReportGarbage /> : <Navigate to="/login" />} />
+        <Route path="/report/:reportId" element={user ? <ReportDetails /> : <Navigate to="/login" />} />
         <Route path="/reports" element={user ? <MyReports /> : <Navigate to="/login" />} />
         <Route path="/leaderboard" element={user ? <Leaderboard /> : <Navigate to="/login" />} />
         <Route path="/" element={<Navigate to={user ? "/dashboard" : "/login"} />} />

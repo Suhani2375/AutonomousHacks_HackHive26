@@ -9,8 +9,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
       manifest: {
-        name: 'CleanCity - Admin Portal',
-        short_name: 'CleanCity Admin',
+        name: 'NeuroClean - Admin Portal',
+        short_name: 'NeuroClean Admin',
         description: 'Municipality Management System',
         theme_color: '#3B82F6',
         background_color: '#1F2937',
