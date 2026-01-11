@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
-import { collection, query, where, getDocs, onSnapshot } from 'firebase/firestore';
+import { collection, query, where, getDocs, orderBy } from 'firebase/firestore';
 import { auth, db } from '../shared/firebase-config';
 import { calculateDistance, getPriorityColor } from '../shared/utils';
 import './Dashboard.css';
@@ -14,36 +14,19 @@ function Dashboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Get user location with proper permission handling
+    // Get user location
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          const location = {
+          setUserLocation({
             lat: position.coords.latitude,
             lng: position.coords.longitude
-          };
-          setUserLocation(location);
-          console.log('Location obtained:', location);
+          });
         },
         (error) => {
           console.error('Error getting location:', error);
-          // Show notification to user
-          if (error.code === error.PERMISSION_DENIED) {
-            alert('Location permission denied. Please enable location access in your browser settings to see nearby tasks sorted by distance.');
-          } else if (error.code === error.POSITION_UNAVAILABLE) {
-            alert('Location unavailable. Please check your GPS settings.');
-          } else {
-            alert('Unable to get your location. Tasks will still be shown but not sorted by distance.');
-          }
-        },
-        {
-          enableHighAccuracy: true,
-          timeout: 10000,
-          maximumAge: 0
         }
       );
-    } else {
-      alert('Geolocation is not supported by your browser.');
     }
 
     const fetchTasks = async () => {
@@ -54,12 +37,13 @@ function Dashboard() {
       }
 
       try {
-        // Fetch assigned tasks - FIXED: Remove double orderBy to avoid index requirement
-        // Sort in memory instead
+        // Fetch assigned tasks (including cleaned tasks that can be re-uploaded)
         const q = query(
           collection(db, 'reports'),
           where('assignedSweeper', '==', user.uid),
-          where('status', 'in', ['assigned', 'pending', 'cleaned'])
+          where('status', 'in', ['assigned', 'pending', 'cleaned']),
+          orderBy('priority', 'asc'),
+          orderBy('createdAt', 'desc')
         );
         const snapshot = await getDocs(q);
         let tasksData = snapshot.docs.map(doc => ({
@@ -67,18 +51,6 @@ function Dashboard() {
           ...doc.data()
         }));
 
-        // Sort by priority first, then by createdAt
-        tasksData.sort((a, b) => {
-          const priorityDiff = (a.priority || 3) - (b.priority || 3);
-          if (priorityDiff !== 0) return priorityDiff;
-          
-          const aTime = a.createdAt?.toDate ? a.createdAt.toDate().getTime() : 
-                       a.createdAt?.seconds ? a.createdAt.seconds * 1000 : 0;
-          const bTime = b.createdAt?.toDate ? b.createdAt.toDate().getTime() : 
-                       b.createdAt?.seconds ? b.createdAt.seconds * 1000 : 0;
-          return bTime - aTime; // Newest first
-        });
-
         // Calculate distances if location available
         if (userLocation) {
           tasksData = tasksData.map(task => ({
@@ -90,81 +62,18 @@ function Dashboard() {
               task.location?.lng || 0
             )
           }));
-          // Re-sort by distance if location is available
-          tasksData.sort((a, b) => {
-            // First by priority
-            const priorityDiff = (a.priority || 3) - (b.priority || 3);
-            if (priorityDiff !== 0) return priorityDiff;
-            // Then by distance
-            return parseFloat(a.distance || 999) - parseFloat(b.distance || 999);
-          });
+          tasksData.sort((a, b) => parseFloat(a.distance) - parseFloat(b.distance));
         }
 
         setTasks(tasksData);
       } catch (error) {
         console.error('Error fetching tasks:', error);
-        alert('Error loading tasks. Please refresh the page.');
       } finally {
         setLoading(false);
       }
     };
 
     fetchTasks();
-
-    // Set up real-time listener for new tasks
-    const user = auth.currentUser;
-    if (user) {
-      const q = query(
-        collection(db, 'reports'),
-        where('assignedSweeper', '==', user.uid),
-        where('status', 'in', ['assigned', 'pending', 'cleaned'])
-      );
-      
-      const unsubscribe = onSnapshot(q, (snapshot) => {
-        let tasksData = snapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        }));
-
-        // Sort by priority first, then by createdAt
-        tasksData.sort((a, b) => {
-          const priorityDiff = (a.priority || 3) - (b.priority || 3);
-          if (priorityDiff !== 0) return priorityDiff;
-          
-          const aTime = a.createdAt?.toDate ? a.createdAt.toDate().getTime() : 
-                       a.createdAt?.seconds ? a.createdAt.seconds * 1000 : 0;
-          const bTime = b.createdAt?.toDate ? b.createdAt.toDate().getTime() : 
-                       b.createdAt?.seconds ? b.createdAt.seconds * 1000 : 0;
-          return bTime - aTime;
-        });
-
-        // Calculate distances if location available
-        if (userLocation) {
-          tasksData = tasksData.map(task => ({
-            ...task,
-            distance: calculateDistance(
-              userLocation.lat,
-              userLocation.lng,
-              task.location?.lat || 0,
-              task.location?.lng || 0
-            )
-          }));
-          tasksData.sort((a, b) => {
-            const priorityDiff = (a.priority || 3) - (b.priority || 3);
-            if (priorityDiff !== 0) return priorityDiff;
-            return parseFloat(a.distance || 999) - parseFloat(b.distance || 999);
-          });
-        }
-
-        setTasks(tasksData);
-        setLoading(false);
-      }, (error) => {
-        console.error('Error in real-time listener:', error);
-        setLoading(false);
-      });
-
-      return () => unsubscribe();
-    }
   }, [navigate, userLocation]);
 
   const getFilteredTasks = () => {
