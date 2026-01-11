@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
-import { collection, query, where, getDocs, orderBy } from 'firebase/firestore';
+import { collection, query, where, getDocs, onSnapshot } from 'firebase/firestore';
 import { auth, db } from '../shared/firebase-config';
 import { calculateDistance, getPriorityColor } from '../shared/utils';
 import './Dashboard.css';
@@ -12,10 +12,9 @@ function Dashboard() {
   const [filter, setFilter] = useState('all');
   const [userLocation, setUserLocation] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [locationError, setLocationError] = useState(null);
 
   useEffect(() => {
-    // Get user location with proper notification
+    // Get user location with proper permission handling
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -24,14 +23,18 @@ function Dashboard() {
             lng: position.coords.longitude
           };
           setUserLocation(location);
-          setLocationError(null);
           console.log('Location obtained:', location);
         },
         (error) => {
           console.error('Error getting location:', error);
-          setLocationError('Location access denied. Please enable location permissions to see nearby tasks.');
           // Show notification to user
-          alert('⚠️ Location access is required to show nearby tasks sorted by distance. Please enable location permissions in your browser settings.');
+          if (error.code === error.PERMISSION_DENIED) {
+            alert('Location permission denied. Please enable location access in your browser settings to see nearby tasks sorted by distance.');
+          } else if (error.code === error.POSITION_UNAVAILABLE) {
+            alert('Location unavailable. Please check your GPS settings.');
+          } else {
+            alert('Unable to get your location. Tasks will still be shown but not sorted by distance.');
+          }
         },
         {
           enableHighAccuracy: true,
@@ -40,11 +43,9 @@ function Dashboard() {
         }
       );
     } else {
-      setLocationError('Geolocation is not supported by your browser.');
+      alert('Geolocation is not supported by your browser.');
     }
-  }, []);
 
-  useEffect(() => {
     const fetchTasks = async () => {
       const user = auth.currentUser;
       if (!user) {
@@ -53,45 +54,29 @@ function Dashboard() {
       }
 
       try {
-        setLoading(true);
-        // Fetch assigned tasks - simplified query to avoid index issues
-        // First get all assigned tasks
-        const q1 = query(
+        // Fetch assigned tasks - FIXED: Remove double orderBy to avoid index requirement
+        // Sort in memory instead
+        const q = query(
           collection(db, 'reports'),
           where('assignedSweeper', '==', user.uid),
-          where('status', '==', 'assigned')
+          where('status', 'in', ['assigned', 'pending', 'cleaned'])
         );
-        
-        // Get cleaned tasks separately
-        const q2 = query(
-          collection(db, 'reports'),
-          where('assignedSweeper', '==', user.uid),
-          where('status', '==', 'cleaned')
-        );
+        const snapshot = await getDocs(q);
+        let tasksData = snapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }));
 
-        const [snapshot1, snapshot2] = await Promise.all([
-          getDocs(q1),
-          getDocs(q2)
-        ]);
-
-        let tasksData = [
-          ...snapshot1.docs.map(doc => ({ id: doc.id, ...doc.data() })),
-          ...snapshot2.docs.map(doc => ({ id: doc.id, ...doc.data() }))
-        ];
-
-        // Sort by priority first (in memory)
+        // Sort by priority first, then by createdAt
         tasksData.sort((a, b) => {
-          const priorityA = a.priority || 3;
-          const priorityB = b.priority || 3;
-          if (priorityA !== priorityB) {
-            return priorityA - priorityB;
-          }
-          // Then by creation date
-          const dateA = a.createdAt?.toDate ? a.createdAt.toDate().getTime() : 
+          const priorityDiff = (a.priority || 3) - (b.priority || 3);
+          if (priorityDiff !== 0) return priorityDiff;
+          
+          const aTime = a.createdAt?.toDate ? a.createdAt.toDate().getTime() : 
                        a.createdAt?.seconds ? a.createdAt.seconds * 1000 : 0;
-          const dateB = b.createdAt?.toDate ? b.createdAt.toDate().getTime() : 
+          const bTime = b.createdAt?.toDate ? b.createdAt.toDate().getTime() : 
                        b.createdAt?.seconds ? b.createdAt.seconds * 1000 : 0;
-          return dateB - dateA;
+          return bTime - aTime; // Newest first
         });
 
         // Calculate distances if location available
@@ -108,11 +93,8 @@ function Dashboard() {
           // Re-sort by distance if location is available
           tasksData.sort((a, b) => {
             // First by priority
-            const priorityA = a.priority || 3;
-            const priorityB = b.priority || 3;
-            if (priorityA !== priorityB) {
-              return priorityA - priorityB;
-            }
+            const priorityDiff = (a.priority || 3) - (b.priority || 3);
+            if (priorityDiff !== 0) return priorityDiff;
             // Then by distance
             return parseFloat(a.distance || 999) - parseFloat(b.distance || 999);
           });
@@ -121,66 +103,68 @@ function Dashboard() {
         setTasks(tasksData);
       } catch (error) {
         console.error('Error fetching tasks:', error);
-        // Try fallback query without status filter
-        try {
-          const fallbackQuery = query(
-            collection(db, 'reports'),
-            where('assignedSweeper', '==', user.uid)
-          );
-          const fallbackSnapshot = await getDocs(fallbackQuery);
-          let fallbackTasks = fallbackSnapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data()
-          }));
-          // Filter in memory
-          fallbackTasks = fallbackTasks.filter(task => 
-            task.status === 'assigned' || task.status === 'cleaned'
-          );
-          
-          // Sort in memory
-          fallbackTasks.sort((a, b) => {
-            const priorityA = a.priority || 3;
-            const priorityB = b.priority || 3;
-            if (priorityA !== priorityB) {
-              return priorityA - priorityB;
-            }
-            const dateA = a.createdAt?.toDate ? a.createdAt.toDate().getTime() : 
-                         a.createdAt?.seconds ? a.createdAt.seconds * 1000 : 0;
-            const dateB = b.createdAt?.toDate ? b.createdAt.toDate().getTime() : 
-                         b.createdAt?.seconds ? b.createdAt.seconds * 1000 : 0;
-            return dateB - dateA;
-          });
-
-          if (userLocation) {
-            fallbackTasks = fallbackTasks.map(task => ({
-              ...task,
-              distance: calculateDistance(
-                userLocation.lat,
-                userLocation.lng,
-                task.location?.lat || 0,
-                task.location?.lng || 0
-              )
-            }));
-            fallbackTasks.sort((a, b) => {
-              const priorityA = a.priority || 3;
-              const priorityB = b.priority || 3;
-              if (priorityA !== priorityB) {
-                return priorityA - priorityB;
-              }
-              return parseFloat(a.distance || 999) - parseFloat(b.distance || 999);
-            });
-          }
-
-          setTasks(fallbackTasks);
-        } catch (fallbackError) {
-          console.error('Fallback query also failed:', fallbackError);
-        }
+        alert('Error loading tasks. Please refresh the page.');
       } finally {
         setLoading(false);
       }
     };
 
     fetchTasks();
+
+    // Set up real-time listener for new tasks
+    const user = auth.currentUser;
+    if (user) {
+      const q = query(
+        collection(db, 'reports'),
+        where('assignedSweeper', '==', user.uid),
+        where('status', 'in', ['assigned', 'pending', 'cleaned'])
+      );
+      
+      const unsubscribe = onSnapshot(q, (snapshot) => {
+        let tasksData = snapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }));
+
+        // Sort by priority first, then by createdAt
+        tasksData.sort((a, b) => {
+          const priorityDiff = (a.priority || 3) - (b.priority || 3);
+          if (priorityDiff !== 0) return priorityDiff;
+          
+          const aTime = a.createdAt?.toDate ? a.createdAt.toDate().getTime() : 
+                       a.createdAt?.seconds ? a.createdAt.seconds * 1000 : 0;
+          const bTime = b.createdAt?.toDate ? b.createdAt.toDate().getTime() : 
+                       b.createdAt?.seconds ? b.createdAt.seconds * 1000 : 0;
+          return bTime - aTime;
+        });
+
+        // Calculate distances if location available
+        if (userLocation) {
+          tasksData = tasksData.map(task => ({
+            ...task,
+            distance: calculateDistance(
+              userLocation.lat,
+              userLocation.lng,
+              task.location?.lat || 0,
+              task.location?.lng || 0
+            )
+          }));
+          tasksData.sort((a, b) => {
+            const priorityDiff = (a.priority || 3) - (b.priority || 3);
+            if (priorityDiff !== 0) return priorityDiff;
+            return parseFloat(a.distance || 999) - parseFloat(b.distance || 999);
+          });
+        }
+
+        setTasks(tasksData);
+        setLoading(false);
+      }, (error) => {
+        console.error('Error in real-time listener:', error);
+        setLoading(false);
+      });
+
+      return () => unsubscribe();
+    }
   }, [navigate, userLocation]);
 
   const getFilteredTasks = () => {
@@ -224,42 +208,6 @@ function Dashboard() {
         </button>
       </div>
 
-      {locationError && (
-        <div className="location-warning" style={{
-          margin: '0 20px 16px',
-          padding: '12px 16px',
-          backgroundColor: '#FEF3C7',
-          border: '1px solid #F59E0B',
-          borderRadius: '8px',
-          color: '#92400E',
-          fontSize: '14px',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '8px'
-        }}>
-          <span>⚠️</span>
-          <span>{locationError}</span>
-        </div>
-      )}
-
-      {userLocation && !locationError && (
-        <div className="location-success" style={{
-          margin: '0 20px 16px',
-          padding: '8px 16px',
-          backgroundColor: '#D1FAE5',
-          border: '1px solid #10B981',
-          borderRadius: '8px',
-          color: '#065F46',
-          fontSize: '13px',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '8px'
-        }}>
-          <span>📍</span>
-          <span>Location enabled - Tasks sorted by distance</span>
-        </div>
-      )}
-
       <div className="filter-buttons">
         <button
           className={`filter-btn ${filter === 'all' ? 'active' : ''}`}
@@ -289,17 +237,7 @@ function Dashboard() {
 
       <div className="tasks-list">
         {getFilteredTasks().length === 0 ? (
-          <div className="no-tasks">
-            <div style={{ fontSize: '48px', marginBottom: '16px' }}>📋</div>
-            <div style={{ fontSize: '18px', fontWeight: '600', marginBottom: '8px', color: '#1f2937' }}>
-              No tasks available
-            </div>
-            <div style={{ fontSize: '14px', color: '#6b7280', maxWidth: '300px', margin: '0 auto' }}>
-              {tasks.length === 0 
-                ? 'You don\'t have any assigned tasks yet. Tasks will appear here when assigned by an admin.'
-                : 'No tasks match the selected filter. Try selecting a different priority.'}
-            </div>
-          </div>
+          <div className="no-tasks">No tasks available</div>
         ) : (
           getFilteredTasks().map((task) => (
             <div

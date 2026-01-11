@@ -458,14 +458,28 @@ Reply ONLY in valid JSON format:
 }
 
 /* When citizen uploads before-clean image */
-exports.onReportUpload = onObjectFinalized(async (event) => {
+exports.onReportUpload = onObjectFinalized(
+  {
+    region: "asia-south1",
+    // Only process files in reports/ folder that end with _before.jpg
+    matchGlob: "reports/**/*_before.jpg"
+  },
+  async (event) => {
   const object = event.data;
   const filePath = object.name; // e.g., "reports/userId/timestamp_before.jpg"
   const bucketName = object.bucket;
   const fileTimestamp = object.timeCreated; // File creation timestamp
   
+  console.log("🔍 AI Analysis triggered for BEFORE image:", filePath);
+  
   if (!filePath) {
-    console.log("No file path provided");
+    console.log("❌ No file path provided");
+    return;
+  }
+  
+  // Ensure it's a before image
+  if (!filePath.includes("_before.jpg") && !filePath.includes("_before.jpeg")) {
+    console.log("⚠️ Skipping - not a before image:", filePath);
     return;
   }
 
@@ -793,16 +807,25 @@ exports.onReportUpload = onObjectFinalized(async (event) => {
       console.error("Error updating report with error status:", updateError);
     }
   }
-});
+  }
+);
 
 /* When cleaner uploads after-clean image */
-exports.onAfterCleanUpload = onObjectFinalized(async (event) => {
+exports.onAfterCleanUpload = onObjectFinalized(
+  {
+    region: "asia-south1",
+    // Only process files in reports/ folder that end with _after.jpg
+    matchGlob: "reports/**/*_after.jpg"
+  },
+  async (event) => {
   const object = event.data;
-  const filePath = object.name; // e.g., "reports/userId/timestamp_after.jpg"
+  const filePath = object.name; // e.g., "reports/taskId/timestamp_after.jpg"
   const bucketName = object.bucket;
   
+  console.log("🧹 AI Analysis triggered for AFTER image:", filePath);
+  
   if (!filePath) {
-    console.log("No file path provided");
+    console.log("❌ No file path provided");
     return;
   }
 
@@ -1034,4 +1057,5 @@ exports.onAfterCleanUpload = onObjectFinalized(async (event) => {
       console.error("Error updating report with error status:", updateError);
     }
   }
-});
+  }
+);

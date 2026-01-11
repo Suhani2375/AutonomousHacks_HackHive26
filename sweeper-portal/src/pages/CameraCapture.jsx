@@ -68,18 +68,10 @@ function CameraCapture() {
     setUploading(true);
     try {
       // Upload image to Firebase Storage
-      // CRITICAL: File name must end with "_after.jpg" for AI processing
       const timestamp = Date.now();
-      const fileName = `${timestamp}_after.jpg`;
-      const imageRef = ref(storage, `reports/${taskId}/${fileName}`);
-      
-      console.log('Uploading after-clean image:', `reports/${taskId}/${fileName}`);
-      
+      const imageRef = ref(storage, `reports/${taskId}/${timestamp}_after.jpg`);
       await uploadBytes(imageRef, photo);
       const imageUrl = await getDownloadURL(imageRef);
-      
-      console.log('Image uploaded successfully:', imageUrl);
-      console.log('AI will process this image automatically...');
 
       // Update report with after image
       // If already cleaned, keep status as cleaned, otherwise set to cleaned
@@ -90,21 +82,17 @@ function CameraCapture() {
         imageAfter: imageUrl,
         status: currentStatus === 'verified' ? 'verified' : 'cleaned',
         cleanedAt: new Date(),
-        afterImageUploadedAt: new Date(),
         history: arrayUnion({
           status: currentStatus === 'verified' ? 'verified' : 'cleaned',
           time: serverTimestamp(),
-          action: 'photo_uploaded',
-          note: 'After-clean image uploaded. AI verification in progress...'
+          action: 'photo_uploaded'
         })
       });
 
-      // Show success message
-      alert('✅ Photo uploaded successfully! AI is verifying the cleaning...');
       navigate('/dashboard');
     } catch (error) {
       console.error('Error uploading photo:', error);
-      alert(`Failed to upload photo: ${error.message}. Please try again.`);
+      alert('Failed to upload photo. Please try again.');
     } finally {
       setUploading(false);
     }
