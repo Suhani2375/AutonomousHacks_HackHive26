@@ -1,10 +1,10 @@
-# CleanCity – Swachh Agent AI  
+# NeuroClean – Swachh Agent AI  
 
 **Autonomous Municipal Garbage Intelligence Platform**
 
-CleanCity is an AI-powered, agent-driven waste management system that enables **verified citizens**, **municipal sweepers**, and **city authorities** to report, prioritize, clean, and verify garbage using **live camera capture**, **GPS validation**, and **Gemini-powered visual intelligence**.
+NeuroClean is an AI-powered, agent-driven waste management system that enables **verified citizens**, **municipal sweepers**, and **city authorities** to report, prioritize, clean, and verify garbage using **live camera capture**, **GPS validation**, and **Gemini-powered visual intelligence**.
 
-Unlike traditional complaint apps, CleanCity works as a **closed-loop AI system** that verifies every report, assigns tasks automatically, and confirms cleaning using **before-and-after image analysis**.
+Unlike traditional complaint apps, NeuroClean works as a **closed-loop AI system** that verifies every report, assigns tasks automatically, and confirms cleaning using **before-and-after image analysis**.
 
 ---
 
@@ -16,7 +16,7 @@ Cities do not fail because of a lack of complaints — they fail due to:
 - Poor prioritization  
 - No cleaning verification  
 
-CleanCity fixes this using an **autonomous AI agent** that:
+NeuroClean fixes this using an **autonomous AI agent** that:
 
 1. Detects garbage from citizen photos  
 2. Verifies authenticity and location  
@@ -66,7 +66,7 @@ All users must be approved by the municipality.
 
 ## Camera & Location Integrity
 
-CleanCity enforces **real-world truth**.
+NeuroClean enforces **real-world truth**.
 
 ✔ Live camera only (no gallery)  
 ✔ GPS captured at upload  
@@ -321,9 +321,9 @@ Points are awarded only after AI verification.
 
 ## Google Maps 
   Used for :
-  Show garbage locations
-  Display sweeper routes
-  Find nearest available cleaner
+  Show garbage locations;
+  Display sweeper routes;
+  Find nearest available cleaner;
   Group multiple reports from same area
 
 ---
@@ -382,9 +382,9 @@ Points are awarded only after AI verification.
 - `GET_FIREBASE_CREDENTIALS.md` - How to get Firebase credentials
 
 ---
-## Why CleanCity is Agentic AI
+## Why NeuroClean is Agentic AI
 
-CleanCity is not a form-based complaint app.  
+NeuroClean is not a form-based complaint app.  
 It is an **autonomous sanitation agent** that:
 
 - **Observes**
@@ -405,9 +405,8 @@ It is an **autonomous sanitation agent** that:
   - Citizen reward partnerships
 ---
 ---
-## CleanCity = AI That Cleans Cities
+## NeuroClean = AI That Cleans Cities
 
 *A real-time, AI-verified, location-trusted waste intelligence platform for smart cities.*
 
 ---
-
