@@ -29,7 +29,7 @@ function App() {
   }
 
   return (
-    <Router>
+    <Router basename="/sweeper">
       <Routes>
         <Route path="/login" element={!user ? <Login /> : <Navigate to="/dashboard" />} />
         <Route path="/dashboard" element={user ? <Dashboard /> : <Navigate to="/login" />} />

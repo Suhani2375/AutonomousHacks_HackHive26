@@ -12,9 +12,11 @@
     "build:citizen": "cd citizen-portal && npm run build",
     "build:sweeper": "cd sweeper-portal && npm run build",
     "build:admin": "cd admin-portal && npm run build",
+    "build:deploy": "node build-and-deploy.js",
+    "deploy": "npm run build:deploy && firebase deploy --only hosting",
+    "deploy:all": "npm run build:deploy && firebase deploy",
     "install:all": "npm install && cd citizen-portal && npm install && cd ../sweeper-portal && npm install && cd ../admin-portal && npm install && cd ../functions && npm install",
     "setup": "node setup-env.js && npm run install:all",
-    "create-admin": "node create-admin.js",
     "create-admin": "node create-admin.js"
   },
   "devDependencies": {

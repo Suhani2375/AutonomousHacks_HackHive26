@@ -2,15 +2,30 @@
 
 A comprehensive PWA solution for municipal garbage reporting with AI-powered waste detection, citizen engagement, sweeper management, and admin oversight.
 
+## 🌐 Live Site
+
+**Your application is live and accessible from anywhere!**
+
+🔗 **Main URL**: [https://hackhive-autonomous.web.app](https://hackhive-autonomous.web.app)
+
+### Access Points:
+- 🏠 **Landing Page**: [https://hackhive-autonomous.web.app](https://hackhive-autonomous.web.app)
+- 👤 **Citizen Portal**: [https://hackhive-autonomous.web.app/citizen/](https://hackhive-autonomous.web.app/citizen/)
+- 🧹 **Sweeper Portal**: [https://hackhive-autonomous.web.app/sweeper/](https://hackhive-autonomous.web.app/sweeper/)
+- 👨‍💼 **Admin Portal**: [https://hackhive-autonomous.web.app/admin/](https://hackhive-autonomous.web.app/admin/)
+
+---
+
 ## 🚀 Quick Start
 
-### One Command to Run Everything!
+### One Command to Run Everything Locally!
 
 ```bash
 npm run dev
 ```
 
-This starts all three portals automatically:
+This starts all portals automatically:
+- 🏠 Landing Page: http://localhost:8080
 - 🌐 Citizen Portal: http://localhost:3000
 - 🧹 Sweeper Portal: http://localhost:3001
 - 👨‍💼 Admin Portal: http://localhost:3002
@@ -49,6 +64,11 @@ This will:
 - `npm run build:citizen` - Build Citizen Portal
 - `npm run build:sweeper` - Build Sweeper Portal
 - `npm run build:admin` - Build Admin Portal
+- `npm run build:deploy` - Build all portals and prepare for deployment
+
+### Deployment
+- `npm run deploy` - Build and deploy to Firebase Hosting
+- `npm run deploy:all` - Build and deploy hosting + functions
 
 ### Setup
 - `npm run install:all` - Install all dependencies
@@ -157,22 +177,62 @@ reports/{reportId}
 
 ## 🚀 Deployment
 
-### Build for Production
+### Quick Deploy (Recommended)
+Deploy everything with one command:
 ```bash
-npm run build
+npm run deploy
 ```
 
-### Deploy to Firebase Hosting
+This will:
+1. Build all portals for production
+2. Prepare the `public/` directory structure
+3. Deploy to Firebase Hosting
+
+### Deploy Everything (Hosting + Functions)
 ```bash
-firebase deploy --only hosting
+npm run deploy:all
 ```
+
+### Manual Deployment Steps
+
+1. **Build all portals**:
+   ```bash
+   npm run build:deploy
+   ```
+
+2. **Deploy to Firebase Hosting**:
+   ```bash
+   firebase deploy --only hosting
+   ```
+
+3. **Deploy Functions** (if needed):
+   ```bash
+   firebase deploy --only functions
+   ```
+
+### Deployment Structure
+
+All portals are deployed to a single domain:
+- Landing page at root: `/`
+- Citizen Portal: `/citizen/`
+- Sweeper Portal: `/sweeper/`
+- Admin Portal: `/admin/`
+
+### Firebase Hosting Configuration
+
+The hosting configuration is in `firebase.json`:
+- Public directory: `public/`
+- SPA routing configured for all portals
+- Landing page serves as entry point
 
 ## 📚 Documentation
 
+- `DEPLOYMENT_COMPLETE.md` - Deployment details and live URLs
 - `QUICK_START.md` - Quick start guide
 - `NEXT_STEPS.md` - Testing and setup guide
 - `SETUP.md` - Detailed setup instructions
 - `FIREBASE_CONFIGURED.md` - Firebase configuration details
+- `GEMINI_MODEL_FIX.md` - AI model configuration
 
 ## 🐛 Troubleshooting
 
@@ -189,6 +249,22 @@ npm run install:all
 node setup-env.js
 ```
 
+## 🔧 Project Configuration
+
+### Base Paths
+All portals are configured with base paths for deployment:
+- Citizen Portal: `/citizen/`
+- Sweeper Portal: `/sweeper/`
+- Admin Portal: `/admin/`
+
+### React Router
+All portals use React Router with `basename` prop configured for proper routing in production.
+
+### Firebase Project
+- Project ID: `hackhive-autonomous`
+- Hosting URL: `https://hackhive-autonomous.web.app`
+- Region: `asia-south1` (for Cloud Functions)
+
 ## 👥 Team
 
 - Member 1: Frontend (Citizen Side)
@@ -202,4 +278,9 @@ This project is part of HackHive26 hackathon.
 
 ---
 
-**🎉 Just run `npm run dev` and everything starts automatically!**
+## 🎉 Quick Links
+
+- 🌐 **Live Site**: [https://hackhive-autonomous.web.app](https://hackhive-autonomous.web.app)
+- 🔧 **Local Development**: Run `npm run dev`
+- 🚀 **Deploy**: Run `npm run deploy`
+- 📊 **Firebase Console**: [https://console.firebase.google.com/project/hackhive-autonomous](https://console.firebase.google.com/project/hackhive-autonomous)
