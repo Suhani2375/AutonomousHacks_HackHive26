@@ -195,7 +195,7 @@ function Login() {
             )}
           </div>
           <div className="back-to-main-link">
-            <a href="http://localhost:8080" className="back-to-main">← Back to Main Page</a>
+            <a href="/" className="back-to-main">← Back to Main Page</a>
           </div>
         </div>
       </div>

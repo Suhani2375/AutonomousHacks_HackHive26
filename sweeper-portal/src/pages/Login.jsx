@@ -209,7 +209,7 @@ function Login() {
             )}
           </div>
           <div className="other-links">
-            <a href="http://localhost:8080" className="back-to-main">← Back to Main Page</a>
+            <a href="/" className="back-to-main">← Back to Main Page</a>
           </div>
         </div>
       </div>

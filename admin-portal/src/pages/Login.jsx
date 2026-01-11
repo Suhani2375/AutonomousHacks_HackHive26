@@ -136,7 +136,7 @@ function Login() {
               Forgot Password?
             </a>
           )}
-          <a href="http://localhost:8080" className="back-link">← Back to Main Page</a>
+          <a href="/" className="back-link">← Back to Main Page</a>
         </div>
 
         <div className="disclaimer">
