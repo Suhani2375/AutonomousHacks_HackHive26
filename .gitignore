@@ -12,6 +12,8 @@ dist/
 build/
 */dist/
 */build/
+.vite/
+*/.vite/
 
 # Firebase
 .firebase/
