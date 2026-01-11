@@ -79,6 +79,30 @@ function TaskDetails() {
 
       <div className="task-info">
         <div className="info-row">
+          <span className="info-label">Status:</span>
+          <span className={`status-badge status-${task.status || 'assigned'}`}>
+            {task.status === 'verified' ? '✅ Verified & Credits Awarded' : 
+             task.status === 'cleaned' ? '🧹 Cleaned (Verifying...)' : 
+             task.status === 'assigned' ? '📋 Assigned' : task.status || 'Assigned'}
+          </span>
+        </div>
+        {task.status === 'verified' && (
+          <div className="info-row credits-row">
+            <span className="info-label">Credits:</span>
+            <span className="credits-awarded">
+              🎁 +2 credits awarded to you and the citizen!
+            </span>
+          </div>
+        )}
+        {task.cleaningQuality && (
+          <div className="info-row">
+            <span className="info-label">Cleaning Quality:</span>
+            <span className={`quality-badge quality-${task.cleaningQuality?.toLowerCase() || 'good'}`}>
+              {task.cleaningQuality || 'Good'}
+            </span>
+          </div>
+        )}
+        <div className="info-row">
           <span className="info-label">Classification:</span>
           <span className={`classification-badge classification-${(task.classification || task.aiAnalysisDetails?.classification || 'unknown').toLowerCase()}`}>
             {(task.classification || task.aiAnalysisDetails?.classification || 'Unknown').toUpperCase()}

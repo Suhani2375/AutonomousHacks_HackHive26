@@ -102,3 +102,122 @@
   color: #6b7280;
 }
 
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.info-row:last-child {
+  border-bottom: none;
+}
+
+.info-label {
+  font-size: 14px;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.info-value {
+  font-size: 14px;
+  color: #1f2937;
+  font-weight: 600;
+}
+
+.classification-badge,
+.severity-badge,
+.status-badge,
+.quality-badge {
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.classification-badge.classification-dry {
+  background: #FEF3C7;
+  color: #92400E;
+}
+
+.classification-badge.classification-wet {
+  background: #DBEAFE;
+  color: #1E40AF;
+}
+
+.classification-badge.classification-mixed {
+  background: #E9D5FF;
+  color: #6B21A8;
+}
+
+.status-badge.status-verified {
+  background: #D1FAE5;
+  color: #065F46;
+}
+
+.status-badge.status-cleaned {
+  background: #DBEAFE;
+  color: #1E40AF;
+}
+
+.status-badge.status-assigned {
+  background: #FEF3C7;
+  color: #92400E;
+}
+
+.quality-badge.quality-excellent {
+  background: #D1FAE5;
+  color: #065F46;
+}
+
+.quality-badge.quality-good {
+  background: #DBEAFE;
+  color: #1E40AF;
+}
+
+.quality-badge.quality-fair {
+  background: #FEF3C7;
+  color: #92400E;
+}
+
+.quality-badge.quality-poor {
+  background: #FEE2E2;
+  color: #991B1B;
+}
+
+.severity-badge.severity-red,
+.severity-badge.severity-high {
+  background: #FEE2E2;
+  color: #991B1B;
+}
+
+.severity-badge.severity-yellow,
+.severity-badge.severity-medium {
+  background: #FEF3C7;
+  color: #92400E;
+}
+
+.severity-badge.severity-green,
+.severity-badge.severity-low {
+  background: #D1FAE5;
+  color: #065F46;
+}
+
+.credits-row {
+  background: #F0FDF4;
+  padding: 16px;
+  border-radius: 8px;
+  margin: 8px 0;
+  border: 1px solid #BBF7D0;
+}
+
+.credits-awarded {
+  font-size: 14px;
+  color: #065F46;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
